@@ -1,10 +1,16 @@
 package net.zeotrope.patterns.factory
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertSame
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
@@ -54,5 +60,19 @@ class PaymentProcessorFactoryTest(
         val actualResult = processor.process(amount)
 
         assertEquals(expectedResult, actualResult)
+    }
+
+    @CsvSource(
+        "bankTransfer, BankTransferProcessor",
+        "cash, CashProcessor",
+        "creditCard, CreditCardProcessor",
+        "onlineService, OnlineServiceProcessor"
+    )
+    @ParameterizedTest(name = "should return correct payment processor for enum type: {0}")
+    fun `should return correct payment processor for string type`(paymentType: String, expectedProcessor: String) {
+        val expectedProcessor = Class.forName("net.zeotrope.patterns.factory.$expectedProcessor")
+        val actual = factory.getPaymentProcessor(paymentType)
+
+        assertTrue(expectedProcessor.name == actual::class.qualifiedName)
     }
 }

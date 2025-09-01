@@ -12,4 +12,14 @@ class PaymentProcessorFactory(val processors: Map<String, PaymentProcessor>) {
             PaymentType.CreditCard,
             PaymentType.OnlineService -> processors[paymentType.type] ?: throw IllegalArgumentException("No processor found for type: $paymentType")
         }
+
+    // Alt non-bean approach. Returns new processor instance not wrapped in a bean.
+    fun getPaymentProcessor(paymentType: String): PaymentProcessor =
+        when (paymentType) {
+            "bankTransfer" -> BankTransferProcessor()
+            "cash" -> CashProcessor()
+            "creditCard" -> CreditCardProcessor()
+            "onlineService" -> OnlineServiceProcessor()
+            else -> throw IllegalArgumentException("No processor found for type: $paymentType")
+        }
 }

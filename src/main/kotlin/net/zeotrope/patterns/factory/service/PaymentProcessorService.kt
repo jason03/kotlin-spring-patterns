@@ -9,4 +9,6 @@ import java.math.BigDecimal
 class PaymentProcessorService(private val factory: PaymentProcessorFactory) {
 
     fun processPayment(amount: BigDecimal, paymentType: PaymentType) = factory.getPaymentProcessor(paymentType).process(amount)
+
+    fun processPayment(amount: BigDecimal, paymentType: String) = factory.getPaymentProcessor(paymentType).process(amount)
 }
