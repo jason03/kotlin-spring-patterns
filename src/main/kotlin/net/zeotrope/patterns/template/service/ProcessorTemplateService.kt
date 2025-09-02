@@ -1,5 +1,8 @@
-package net.zeotrope.patterns.template
+package net.zeotrope.patterns.template.service
 
+import net.zeotrope.patterns.common.DataType
+import net.zeotrope.patterns.template.CsvDataProcessor
+import net.zeotrope.patterns.template.JsonDataProcessor
 import org.springframework.stereotype.Service
 
 @Service

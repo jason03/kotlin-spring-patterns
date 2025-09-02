@@ -1,4 +1,4 @@
-package net.zeotrope.patterns.template
+package net.zeotrope.patterns.common
 
 enum class DataType {
     CSV,
