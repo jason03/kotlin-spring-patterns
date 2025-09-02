@@ -2,7 +2,7 @@ package net.zeotrope.patterns.templateDSL
 
 class ProcessorDsl {
     private lateinit var loadAction: () -> String
-    private lateinit var processAction: () -> String
+    private lateinit var analyseAction: () -> String
     private lateinit var saveAction: () -> String
 
     fun load(action: () -> String) {
@@ -10,7 +10,7 @@ class ProcessorDsl {
     }
 
     fun analyse(action: () -> String) {
-        processAction = action
+        analyseAction = action
     }
 
     fun save(action: () -> String) {
@@ -20,11 +20,11 @@ class ProcessorDsl {
     fun process(): List<String> {
         when {
             (!::loadAction.isInitialized) ||
-                (!::processAction.isInitialized) ||
+                (!::analyseAction.isInitialized) ||
                 (!::saveAction.isInitialized) -> throw IllegalStateException("Processor DSLs not initialized")
         }
         val loadResult = loadAction()
-        val processResult = processAction()
+        val processResult = analyseAction()
         val saveResult = saveAction()
         return listOf(loadResult, processResult, saveResult)
     }
